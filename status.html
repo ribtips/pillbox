@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Javascript</title>
+		<style type="text/css">
+			
+			.MonAM {
+				background-color:red;
+				grid-area: MonAM;
+				width:200px;
+				height:200px;
+				margin:5px;
+				border-radius:25px;
+				text-align: center;
+			}
+			.MonPM {
+				background-color:red;
+				grid-area: MonPM;
+				width:200px;
+				height:200px;
+				margin:5px;
+				border-radius:25px;
+			}
+			.TueAM {
+				background-color:red;
+				grid-area: TueAM;
+				width:200px;
+				height:200px;
+				margin:5px;
+				border-radius:25px;
+				}
+			.TuePM {
+				background-color:red;
+				grid-area: TuePM;
+				width:200px;
+				height:200px;
+				margin:5px;
+				border-radius:25px;
+}			
+
+			.square {
+				background-color:red;
+				width:150px;
+				height:100px;
+				margin:5px;
+				border-radius:25px;
+				text-align: center;
+				font-size: 120%
+			}
+			
+		</style>		
+	</head>
+
+	<body>
+		<center>
+			<table>
+			<tr>
+				<td>
+					<div id="MonAM" class=square>Monday AM</div>
+				</td>
+				<td>
+					<div id="MonPM" class=square>Monday PM</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="TueAM" class=square>Tuesday AM</div>
+				</td>
+				<td>
+					<div id="TuePM" class=square>Tuesday PM</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="WedAM" class=square>Wednesday AM</div>
+				</td>
+				<td>
+					<div id="WedPM" class=square>Wednesday PM</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="ThuAM" class=square>Thursday AM</div>
+				</td>
+				<td>
+					<div id="ThuPM" class=square>Thursday PM</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="FriAM" class=square>Friday AM</div>
+				</td>
+				<td>
+					<div id="FriPM" class=square>Friday PM</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="SatAM" class=square>Saturday AM</div>
+				</td>
+				<td>
+					<div id="SatPM" class=square>Saturday PM</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div id="SunAM" class=square>Sunday AM</div>
+				</td>
+				<td>
+					<div id="SunPM" class=square>Sunday PM</div>
+				</td>
+			</tr>		
+		</table>
+	</center>	
+		<script type="text/javascript">
+			document.getElementById("MonAM").innerHTML = "Monday Morning";
+//			document.getElementById("MonAM").style.backgroundColor = "green";
+//			document.getElementById("SatPM").style.backgroundColor = "green"
+			
+			function fetchJSONFile(path, callback) {
+				var httpRequest = new XMLHttpRequest();
+				httpRequest.onreadystatechange = function() {
+				if (httpRequest.readyState == 4) {
+					if (httpRequest.status == 200) {
+						var data = JSON.parse(httpRequest.responseText);
+					if (callback) callback(data);
+					}
+					}
+				};
+				httpRequest.open('GET', path);
+				httpRequest.send(); 
+			}
+
+			fetchJSONFile('the_data.txt', function(data){
+			//	console.log(data[0]["MonPM"]["time"]);
+				var days = "";
+				var x;
+				for (x in data) {
+					console.log(x);
+					console.log(data[x]["current"]);
+					if (data[x]["current"] == 1) {
+						console.log(data[x]["current"]);
+						document.getElementById(x).style.backgroundColor = "green";
+						document.getElementById(x).innerHTML = document.getElementById(x).innerHTML + "<br>" + data[x]["time"];
+					}
+				}
+				});
+			
+		</script>
+
+</body>
+
+
+</html>
