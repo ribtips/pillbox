@@ -7,7 +7,7 @@ import RPi.GPIO as GPIO
 import subprocess
 
 primary_file='the_data.txt'
-#need to modify the ssh location like bobjones@bobjones.com
+#need to modify the ssh location like bobjones @ bobjones.com
 ssh_location='######:html/'
 
 def main_function():
