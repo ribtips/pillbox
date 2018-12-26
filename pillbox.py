@@ -4,8 +4,11 @@ import json
 import time
 import os.path
 import RPi.GPIO as GPIO
+import subprocess
 
 primary_file='the_data.txt'
+#need to modify the ssh location like bobjones@bobjones.com
+ssh_location='######:html/'
 
 def main_function():
  GPIO.setmode(GPIO.BCM)
@@ -23,19 +26,20 @@ def board_set_up(switch):
 		GPIO.setup(switch[key]['pinNum'],GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
 
 def check_switches(switch):
-	print(switch['SatPM'])
-	for key in switch:
-		switch[key]['current']=GPIO.input(switch[key]['pinNum'])
-		print("{} Pin {} has a current value of {} and was {}".format(key,switch[key]['pinNum'],switch[key]['current'],switch[key]['orig']))
-		if switch[key]['current'] == switch[key]['orig']:
-			pass
-		else:
-			print("There is a change!")
-			switch[key]['orig'] = switch[key]['current']
-			#switch[key]['time'] = time.time()
-			switch[key]['time'] = time.asctime(time.localtime(time.time()))
-			with open(primary_file,'w') as outfile:
-				json.dump(switch,outfile)
+    print(switch['SatPM'])
+    for key in switch:
+        switch[key]['current']=GPIO.input(switch[key]['pinNum'])
+        print("{} Pin {} has a current value of {} and was {}".format(key,switch[key]['pinNum'],switch[key]['current'],switch[key]['orig']))
+        if switch[key]['current'] == switch[key]['orig']:
+            pass
+        else:
+            print("There is a change!")
+            switch[key]['orig'] = switch[key]['current']
+            switch[key]['time'] = time.asctime(time.localtime(time.time()))
+            with open(primary_file,'w') as outfile:
+                json.dump(switch,outfile)
+            print("Now I'm going to rsync the file...")
+            subprocess.run(["rsync","-avzhe","ssh","the_data.txt",ssh_location])
 
 def check_for_file():
         if os.path.exists(primary_file):
